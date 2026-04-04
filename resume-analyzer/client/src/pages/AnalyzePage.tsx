@@ -36,7 +36,21 @@ export default function AnalyzePage() {
 
   const handleAnalyze = async () => {
     if (!resume.trim() || !jd.trim()) {
-      gsap.to(".input-card", { x: [-6, 6, -4, 4, 0], duration: 0.4, ease: "power2.out" });
+      gsap.fromTo(
+  ".input-card",
+  { x: 0 },
+  {
+    keyframes: [
+      { x: -6 },
+      { x: 6 },
+      { x: -4 },
+      { x: 4 },
+      { x: 0 }
+    ],
+    duration: 0.4,
+    ease: "power1.inOut"
+  }
+);
       return;
     }
 
