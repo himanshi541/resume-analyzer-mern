@@ -27,17 +27,26 @@ const limiter = rateLimit({
 app.use("/api/", limiter);
 
 // MongoDB connection
+const MONGO_URI = process.env.MONGODB_URI;
+
+if (!MONGO_URI) {
+  console.error("❌ MONGODB_URI is not defined");
+  process.exit(1);
+}
+
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/resume-analyzer")
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.log("⚠️  MongoDB not connected (running without DB):", err.message));
+  .connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.log("❌ MongoDB Error:", err.message));
 
 // Routes
 app.use("/api/analyze", analyzeRoutes);
 app.use("/api/history", historyRoutes);
 
 // Health check
-app.get("/api/health", (req, res) => res.json({ status: "ok", timestamp: new Date() }));
+app.get("/api/health", (req, res) =>
+  res.json({ status: "ok", timestamp: new Date() }),
+);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
