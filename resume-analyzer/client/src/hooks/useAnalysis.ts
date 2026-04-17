@@ -22,7 +22,7 @@ export function useAnalysis() {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.post("/api/analyze", { resume, jobDescription });
+      const { data } = await axios.post("https://resume-analyzer-mern.vercel.app/api/analyze", { resume, jobDescription });
       setResult(data.data);
       return data.data as AnalysisResult;
     } catch (err: any) {
